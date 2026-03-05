@@ -1,0 +1,32 @@
+# Claude config
+.claude/
+
+# Data
+data-source/
+
+# Models
+models/
+*.pt
+*.pth
+*.pkl
+*.onnx
+*.h5
+
+# Outputs
+submissions/
+
+# Python
+__pycache__/
+*.pyc
+
+# Environments
+venv/
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
