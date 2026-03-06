@@ -38,6 +38,7 @@ TRAIN_PARQUET = os.path.join(DATA_DIR, "train_sample.parquet")
 
 DEVICE_COL = "common[0].Md"   # encoded: 0 = 10kW simulator, 1 = 100kW simulator
 DEVICE_NAMES = {0: "DER Simulator 10kW", 1: "DER Simulator 100kW"}
+# -1 = NaN rows (unknown device type) — excluded from per-device training
 
 N_FOLDS = 5
 SEED = 42
@@ -199,8 +200,11 @@ def main():
     del sample_df, layout
     gc.collect()
 
-    dev_values = sorted(np.unique(dev_all).tolist())
-    print(f"  Total rows: {n_total:,} | Devices: {dev_values} | Features: {len(feature_cols)}")
+    all_dev_values = sorted(np.unique(dev_all).tolist())
+    dev_values = [v for v in all_dev_values if v >= 0]  # exclude -1 (NaN device type)
+    n_unknown = (dev_all == -1).sum()
+    print(f"  Total rows: {n_total:,} | Devices found: {all_dev_values} "
+          f"| Training on: {dev_values} | Unknown (-1): {n_unknown:,} | Features: {len(feature_cols)}")
     print(f"  Positive rate: {y_all.mean()*100:.1f}%")
 
     # ------------------------------------------------------------------ per-device training

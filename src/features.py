@@ -10,7 +10,9 @@ Features added:
   - Capacity violation: how far measurements exceed rated limits
   - Voltage/current imbalance across phases
   - Frequency deviation from nominal (60 Hz)
-  - Operating mode flags
+
+Note: fe_mode_nonzero (DERMeasureAC[0].DERMode) was removed — that column
+was identified as a NaN-pattern leak and removed from the dataset (2026-03).
 """
 
 import numpy as np
@@ -85,9 +87,5 @@ def add_features(df: pd.DataFrame) -> pd.DataFrame:
     # ------------------------------------------------------------------ frequency deviation
     hz = col("DERMeasureAC[0].Hz")
     df["fe_hz_dev"] = (hz - 60.0).abs().astype(np.float32)
-
-    # ------------------------------------------------------------------ mode flags
-    mode = col("DERMeasureAC[0].DERMode")
-    df["fe_mode_nonzero"] = (mode != 0).astype(np.float32)
 
     return df

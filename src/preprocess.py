@@ -33,7 +33,7 @@ CAT_COLS = [
     "common[0].SN",
     "DERMeasureDC[0].Prt[0].IDStr",
     "DERMeasureDC[0].Prt[1].IDStr",
-    "DeviceType",
+    # DeviceType removed from dataset (2026-03 leak fix)
 ]
 
 
